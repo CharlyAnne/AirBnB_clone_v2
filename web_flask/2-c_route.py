@@ -1,31 +1,35 @@
 #!/usr/bin/python3
-"""Start web application with two routings
 """
-
+a script that starts a Flask web application:
+listens on 0.0.0.0, port 5000
+Routes:	/: display “Hello HBNB!”
+    /hbnb: display “HBNB”
+    /c/<text>: display “C” followed by the value of text
+"""
 from flask import Flask
+
+
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello():
-    """Return string when route queried
-    """
-    return 'Hello HBNB!'
+@app.route("/", strict_slashes=False)
+def hello_route():
+    """function for web app home route"""
+    return "Hello HBNB!"
 
 
-@app.route('/hbnb')
-def hbnb():
-    """Return string when route queried
-    """
-    return 'HBNB'
+@app.route("/hbnb", strict_slashes=False)
+def hbnb_route():
+    """displays /hbnb web app route"""
+    return "HBNB"
 
 
-@app.route('/c/<text>')
-def c_is_fun(text):
-    """Return reformatted text
-    """
-    return 'C ' + text.replace('_', ' ')
+@app.route("/c/<text>", strict_slashes=False)
+def c_route(text):
+    """displays value of /c/<text> web app route"""
+    text = text.replace("_", " ")
+    return "C %s" % text
 
-if __name__ == '__main__':
-    app.url_map.strict_slashes = False
-    app.run(host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
