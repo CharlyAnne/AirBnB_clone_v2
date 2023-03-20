@@ -1,22 +1,32 @@
 #!/usr/bin/env bash
-# Set up server file system for deployment
+# a script to setup my web servers for the deployment of web_static
 
-# install nginx
+# update packages and install nginx
 sudo apt-get -y update
 sudo apt-get -y install nginx
-sudo service nginx start
 
-# configure file system
-sudo mkdir -p /data/web_static/shared/
+# creating paths
 sudo mkdir -p /data/web_static/releases/test/
-echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html > /dev/null
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo mkdir -p /data/web_static/shared
+sudo touch /data/web_static/releases/test/index.html
 
-# set permissions
-sudo chown -R ubuntu:ubuntu /data/
+# Print Welcome message
+echo "Welcome to my site!"  >> /data/web_static/releases/test/index.html
 
-# configure nginx
-sudo sed -i '44i \\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-available/default
+# Check if directory current exist
+if [ -d "/data/web_static/current" ]
+then
+        sudo rm -rf /data/web_static/current
+fi
 
-# restart web server
+# creating a symbolink link  linked to the folder
+sudo ln -s -f /data/web_static/releases/test/ /data/web_static/current
+
+# give ownership of the /data/ folder to the ubuntu user AND group
+sudo chown -hR ubuntu:ubuntu /data/
+
+# Update the Nginx configuration to serve the file content
+sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n' /etc/nginx/sites-enabled/default
+
+# restart nginx server
 sudo service nginx restart

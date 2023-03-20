@@ -1,25 +1,24 @@
 #!/usr/bin/python3
-"""Compress web static package
+"""
+a script Fabric that generates a .tgz
+from the contents of web_static
 """
 from fabric.api import local
 from datetime import datetime
 
 
 def do_pack():
-    """Function to compress directory
-
-    Return: path to archive on success; None on fail
     """
-    # Get current time
-    now = datetime.now()
-    now = now.strftime('%Y%m%d%H%M%S')
-    archive_path = 'versions/web_static_' + now + '.tgz'
+        return the archive path if archive has been correctly
+        gernerated.
+    """
 
-    # Create archive
-    local('mkdir -p versions/')
-    result = local('tar -cvzf {} web_static/'.format(archive_path))
+    local("mkdir -p versions")
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    archived_f_path = "versions/web_static_{}.tgz".format(date)
+    t_gzip_archive = local("tar -cvzf {} web_static".format(archived_f_path))
 
-    # Check if archiving was successful
-    if result.succeeded:
-        return archive_path
-    return None
+    if t_gzip_archive.succeeded:
+        return archived_f_path
+    else:
+        return None
