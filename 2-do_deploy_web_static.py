@@ -14,8 +14,8 @@ env.key_filename = "~/.ssh/id_rsa"
 def do_deploy(archive_path):
     """distributes archive to servers"""
     try:
-        if os.path.exists(archive_path) is False:
-            return False
+        if not (path.exists(archive_path)):
+                        return False
 
         # upload archive
         put(archive_path, '/tmp/')
