@@ -6,6 +6,9 @@ sudo apt-get -y update
 sudo apt-get -y install nginx
 
 # creating paths
+sudo mkdir -p /data/
+sudo mkdir -p /data/web_static/
+sudo mkdir -p /data/web_static/released/
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared
 sudo touch /data/web_static/releases/test/index.html
