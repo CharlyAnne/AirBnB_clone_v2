@@ -12,9 +12,7 @@ env.user = "ubuntu"
 
 
 def do_pack():
-    """
-        return the archive path if archive has generated correctly.
-    """
+    """to create a tar gzipped archive of the directory web_static."""
     dt = datetime.utcnow()
     file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
                                                          dt.month,
@@ -29,8 +27,9 @@ def do_pack():
         return None
     return file
 
+
 def do_deploy(archive_path):
-    """this distributes an archive to a web server
+    """This distributes an archive to a web server.
     Args:
         archive_path (str): The path of the archive to distribute.
     Returns:
@@ -70,7 +69,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """this creates and distributes an archive to the web server."""
+    """Creating and distributing an archive to a web server."""
     file = do_pack()
     if file is None:
         return False
