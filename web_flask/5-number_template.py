@@ -9,9 +9,9 @@ Routes:	/: display “Hello HBNB!”
     /number/<n>: display “n is a number” only if n is an integer
     /number_template/<n>: display a HTML page only if n is an int
 """
+
 from flask import Flask
 from flask import render_template
-
 
 app = Flask(__name__)
 
