@@ -10,9 +10,9 @@ Routes:	/: display “Hello HBNB!”
     /number_template/<n>: display a HTML page only if n is an int
     /number_odd_or_even/<n>: display n if it is odd or even
 """
+
 from flask import Flask
 from flask import render_template
-
 
 app = Flask(__name__)
 
