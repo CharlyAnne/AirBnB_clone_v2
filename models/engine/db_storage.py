@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Database storage engine using SQLAlchemy with a mysql+mysqldb database
+"""
+Database storage engine using SQLAlchemy with a mysql+mysqldb database
 connection.
 """
 from sqlalchemy import create_engine
