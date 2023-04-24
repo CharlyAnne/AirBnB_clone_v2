@@ -58,8 +58,8 @@ class Place(BaseModel, Base):
         """initializes Place"""
         super().__init__(*args, **kwargs)
         
-     @property 
-     def reviews(self):
+    @property 
+    def reviews(self):
         """Return all reviews for this place object"""
         values_review = models.storage.all("Review").values()
         list_review = []
@@ -69,9 +69,9 @@ class Place(BaseModel, Base):
         return list_review
       
     
-      if getenv('HBNB_TYPE_STORAGE') != 'db':
-        @property
-        def amenities(self):
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+      @property
+      def amenities(self):
             """Return the list of amenities linked to this place"""
             values_amenity = models.storage.all("Amenity").values()
             list_amenity = []
