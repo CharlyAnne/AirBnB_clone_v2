@@ -6,6 +6,7 @@ from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
 from models import storage_mode
 from models.review import Review
+from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
   place_amenity = Table('place_amenity',
