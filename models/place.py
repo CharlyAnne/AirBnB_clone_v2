@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 from models import storage_mode
 from models.review import Review
 
+if getenv('HBNB_TYPE_STORAGE') == 'db':
 place_amenity = Table('place_amenity',
                       Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
