@@ -37,7 +37,7 @@ class Place(BaseModel, Base):
       longitude = Column(Float())
       reviews = relationship("Review", cascade="all, delete",
                                backref="places")
-        amenities = relationship("Amenity",
+      amenities = relationship("Amenity",
                                  secondary='place_amenity',
                                  viewonly=False,
                                  backref="place_amenities")
@@ -61,7 +61,7 @@ class Place(BaseModel, Base):
       @property 
       def reviews(self):
         """Return all reviews for this place object"""
-            values_review = models.storage.all("Review").values()
+        values_review = models.storage.all("Review").values()
         list_review = []
         for review in values_review:
             if review.place_id == self.id:
@@ -70,8 +70,8 @@ class Place(BaseModel, Base):
       
       if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
-      def amenities(self):
-        """Return the list of amenities linked to this place"""
+        def amenities(self):
+            """Return the list of amenities linked to this place"""
             values_amenity = models.storage.all("Amenity").values()
             list_amenity = []
             for amenity in values_amenity:
