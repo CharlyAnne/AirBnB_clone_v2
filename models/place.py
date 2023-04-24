@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
-from models import storage_mode
+from models import storage, storage_mode
 from models.review import Review
 
 place_amenity = Table('place_amenity',
