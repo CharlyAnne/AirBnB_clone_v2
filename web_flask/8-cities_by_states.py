@@ -4,28 +4,26 @@ Starts a flask app
 listens to 0.0.0.0 on port 5000
 """
 
-import os
-from flask import Flask, render_template
 from models import storage
 from models.state import State
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
-@app.route("/cities_by_states", strict_slashes=False)
-def cities_by_states():
-    """
-    Displays list of all cities by State objects in DBStorage.
-    """
-    states = storage.all("State")
-    return render_template("8-cities_by_states.html", states=states)
+@app.route('/cities_by_states', strict_slashes=False)
+def list_state():
+    """Render list of all states and cities link to them."""
+    states_list = storage.all(State)
+    return render_template('8-cities_by_states.html', states=states_list)
 
 
 @app.teardown_appcontext
-def teardown(exception):
-    """Remove the current session"""
+def close_session(exception=None):
+    """Close the current session."""
     storage.close()
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
