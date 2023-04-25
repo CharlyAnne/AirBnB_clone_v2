@@ -3,26 +3,26 @@
 Starts a flask app
 listens to 0.0.0.0 on port 5000
 """
-import os
-from flask import Flask, render_template
 from models import storage
 from models.state import State
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
-app.route("/states_list", strict_slashes=False)
-def display_states():
-    """Render state_list html page to display States created"""
-    states = storage.all()
-    return render_template('7-states_list.html', states=states)
-
-
 @app.teardown_appcontext
-def teardown(self):
-    """Method to remove current SQLAlchemy Session"""
+def close_session(exception=None):
+    """Close the current session."""
     storage.close()
 
 
-if __name__ == "__main__":
+@app.route('/states_list', strict_slashes=False)
+def list_state():
+    """Render list of all states."""
+    states_list = storage.all(State)
+    return render_template('7-states_list.html', states=states_list)
+
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
