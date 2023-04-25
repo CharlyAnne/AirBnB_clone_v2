@@ -7,14 +7,10 @@ from sqlalchemy.orm import relationship
 
 
 class Amenity(BaseModel, Base):
-    """class for amenities"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        __tablename__ = 'amenities'
-        name = Column(String(128), nullable=False)
-        
-    else:
-        name = ""
-        
-    def __init__(self, *args, **kwargs):
-        """initializes Amenity"""
-        super().__init__(*args, **kwargs)
+    """Represents the amenities table in the db"""
+    __tablename__ = 'amenities'
+    name = Column(String(128), nullable=False)
+    place_amenities = relationship(
+            "Place",
+            secondary="place_amenity",
+            backref='amenities')
