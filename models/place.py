@@ -8,7 +8,7 @@ from sqlalchemy.sql.schema import Table
 
 place_amenity = Table("place_amenity", Base.metadata, Column(
         "place_id", String(60), ForeignKey('places.id')), Column(
-        "amenity_id", String(60, collation='latin1_swedish_ci'),
+        "amenity_id", String(60),
         ForeignKey('amenities.id'), primary_key=True, nullable=False),
         extend_existing=True, mysql_charset="latin1")
 
@@ -16,7 +16,7 @@ place_amenity = Table("place_amenity", Base.metadata, Column(
 class Place(BaseModel, Base):
     """Represents the Place table in the db"""
     __tablename__ = 'places'
-    city_id = Column(String(60, collation='latin1_swedish_ci'),
+    city_id = Column(String(60),
                      ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'))
     name = Column(String(128), nullable=False)
