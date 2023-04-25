@@ -9,14 +9,12 @@ from sqlalchemy.sql.schema import Table
 place_amenity = Table("place_amenity", Base.metadata, Column(
         "place_id", String(60), ForeignKey('places.id')), Column(
         "amenity_id", String(60, collation='latin1_swedish_ci'),
-        ForeignKey('amenities.id')),
-        mysql_default_charset="latin1"
+        ForeignKey('amenities.id'))
         )
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
       __tablename__ = 'places'
       city_id = Column(String(60, collation='latin1_swedish_ci'),
                      ForeignKey("cities.id"), nullable=False)
@@ -35,41 +33,42 @@ class Place(BaseModel, Base):
                                  secondary='place_amenity',
                                  viewonly=False,
                                  backref="place_amenities")
-    else:
-        city_id = ""
-        user_id = ""
-        name = ""
-        description = ""
-        number_rooms = 0
-        number_bathrooms = 0
-        max_guest = 0
-        price_by_night = 0
-        latitude = 0.0
-        longitude = 0.0
-        amenity_ids = []
-        
-    def __init__(self, *args, **kwargs):
-        """initializes Place"""
-        super().__init__(*args, **kwargs)
-        
-    @property 
+    @property
     def reviews(self):
-        """Return all reviews for this place object"""
-        values_review = models.storage.all("Review").values()
-        list_review = []
-        for review in values_review:
-            if review.place_id == self.id:
-                list_review.append(review)
-        return list_review
-      
-    
-    if getenv('HBNB_TYPE_STORAGE') != 'db':
-      @property
-      def amenities(self):
-            """Return the list of amenities linked to this place"""
-            values_amenity = models.storage.all("Amenity").values()
-            list_amenity = []
-            for amenity in values_amenity:
-                if amenity.place_id == self.id:
-                    list_amenity.append(amenity)
-            return list_amenity
+        """
+        Returns the list of Reviews instances with place_id
+        equals to the current place.id
+        """
+        from models import storage
+        objs = []
+        for _, value in storage.all(Review).items():
+            if self.id == value.place_id:
+                objs.append(str(value))
+        return objs
+
+    @property
+    def amenities(self):
+        """
+        Returns the list of Amenity instances based on the attribute.
+        Amenity_ids that contains all Amenity.id linked to the Place.
+        """
+        from models import storage
+        from models.amenity import Amenity
+
+        objs = []
+        for _, value in storage.all(Amenity).items():
+            if value.id in self.amenity_ids:
+                objs.append(str(value))
+        return objs
+
+    @amenities.setter
+    def amenities(self, obj):
+        """
+        Add an Amenity.id to the attribute amenity_ids.
+        Only Amenity object, otherwise, do nothing.
+        """
+        from models.amenity import Amenity
+
+        if type(obj) is not Amenity:
+            return
+        self.amenity_ids.append(obj.id)
