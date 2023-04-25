@@ -1,22 +1,17 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models.amenity import Amenity
-from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
-from models import storage_mode
 from models.review import Review
-from os import getenv
+from sqlalchemy.sql.schema import Table
 
-if getenv('HBNB_TYPE_STORAGE') == 'db':
-  place_amenity = Table('place_amenity',
-                      Base.metadata,
-                      Column('place_id', String(60), ForeignKey('places.id'),
-                             primary_key=True, nullable=False),
-                      Column('amenity_id',
-                             String(60, collation='latin1_swedish_ci'),
-                             ForeignKey('amenities.id'),
-                             )
+place_amenity = Table("place_amenity", Base.metadata, Column(
+        "place_id", String(60), ForeignKey('places.id')), Column(
+        "amenity_id", String(60, collation='latin1_swedish_ci'),
+        ForeignKey('amenities.id')),
+        mysql_default_charset="latin1"
+        )
 
 
 class Place(BaseModel, Base):
