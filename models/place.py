@@ -16,8 +16,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
                       Column('amenity_id',
                              String(60, collation='latin1_swedish_ci'),
                              ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False),
-                      extend_existing=True)
+                             )
 
 
 class Place(BaseModel, Base):
