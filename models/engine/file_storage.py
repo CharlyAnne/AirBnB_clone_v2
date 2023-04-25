@@ -2,15 +2,7 @@
 """
 This module defines a class to manage file storage for hbnb clone
 """
-
 import json
-from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 
 
 class FileStorage:
@@ -22,16 +14,15 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if not cls:
             return FileStorage.__objects
-        if not isinstance(cls, str):
-            cls = cls.__name__
-        class_objs = {}
-        [class_objs.update({key: val}) for key, val in self.__objects.items()
-            if cls == key.split('.')[0]]
-        return class_objs
+        objs = {}
+        for k in FileStorage.__objects:
+            if type(FileStorage.__objects[k]) == cls:
+                objs[k] = FileStorage.__objects[k]
+        return objs
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({type(obj).__name__ + '.' + obj.id: obj})
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -40,7 +31,7 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            json.dump(temp, f)
+            json.dump(temp, f, indent=4)
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -67,13 +58,13 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete an object from __objects"""
-        if obj is None:
+        """Deletes obj from __objects if it’s contained inside"""
+        if not obj:
             return
-        obj_key = f"{type(obj).__name__}.{obj.id}"
-        if obj_key in self.__objects.keys():
-            del self.__objects[obj_key]
+        obj = obj.to_dict()
+        key = "{}.{}".format(obj['__class__'], obj['id'])
+        del FileStorage.__objects[key]
 
     def close(self):
-        """Deserialize json object to a dictionary"""
+        """calls reload method for deserializing the json file to objects"""
         self.reload()
