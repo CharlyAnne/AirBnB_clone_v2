@@ -1,39 +1,23 @@
 #!/usr/bin/python3
 '''The Package initializer'''
 import os
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
-type_storage = os.getenv('HBNB_TYPE_STORAGE')
+HBNB_TYPE_STORAGE = os.environ.get('HBNB_TYPE_STORAGE')
 
-def storage_mode():
-    """Define storage mode based on os.environ"""
-    st_mode = os.getenv('HBNB_TYPE_STORAGE', default='file')
-
-    def is_db():
-        """Check if the storage type is a database"""
-        if st_mode == 'db':
-            return True
-        return False
-    return is_db()
-if not storage_mode():
-    from models.engine.file_storage import FileStorage
-    storage = FileStorage()
-
-else:
+if HBNB_TYPE_STORAGE == 'db':
     from models.engine.db_storage import DBStorage
+
     storage = DBStorage()
     storage.reload()
-    
-
-if type_storage == "db":
-    from models.engine.db_storage import DBStorage
-    storage = DBStorage()
 else:
     from models.engine.file_storage import FileStorage
+
     storage = FileStorage()
-storage.reload()
-
-
-if __name__ == '__main__':
-    storage_mode()
-
-
+    storage.reload()
