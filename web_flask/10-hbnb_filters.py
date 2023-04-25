@@ -2,26 +2,28 @@
 """Starts a Flask web application"""
 
 from models import storage
-from flask import Flask
-from flask import render_template
+from models.state import State
+from models.amenity import Amenity
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
-@app.route("/hbnb_filters", strict_slashes=False)
-def hbnb_filters():
-    """Displays the main HBnB filters HTML page."""
-    states = storage.all("State")
-    amenities = storage.all("Amenity")
-    return render_template("10-hbnb_filters.html",
-                           states=states, amenities=amenities)
+@app.route('/hbnb_filters', strict_slashes=False)
+def index_html_6():
+    """Displays a html page like 6-index.html."""
+    states_list = storage.all(State)
+    amenities_list = storage.all(Amenity)
+    return render_template(
+            '10-hbnb_filters.html', states=states_list, amenities=amenities_list)
 
 
 @app.teardown_appcontext
-def teardown(exc):
-    """Remove the current SQLAlchemy session."""
+def close_session(exception=None):
+    """Close the current session."""
     storage.close()
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
