@@ -2,8 +2,6 @@
 """
 Contains class BaseModel
 """
-import models
-from os import getenv
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,7 +10,7 @@ from sqlalchemy import Column, String, DateTime
 class Base:
     """Set charset of all tables."""
     __table_args__ = {
-        "mysql_default_charset": "latin1_swedish_ci"
+        "mysql_default_charset": "latin1"
     }
 
 
